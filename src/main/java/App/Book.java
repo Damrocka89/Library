@@ -45,7 +45,7 @@ public class Book {
     }
 
     protected String bookToCsv() {
-        return bookId + ";" + title + ";" + isbnNumber + ":" + year + ";" + typeOfBinding + ";" +authorsIdsToCSV()+";"+cathegory.getCathegoryId();
+        return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" +authorsIdsToCSV()+";"+cathegory.getCathegoryId();
     }
 
     public int getBookId() {

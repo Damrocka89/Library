@@ -25,36 +25,42 @@ public class LibraryApp {
         readUsersAndPasswords();
     }
 
-    private void readAuthorsFromFile() {
+    private boolean readAuthorsFromFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\authors.csv"))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .forEach(arrayOfStrings ->
                             authors.add(new Author(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], Integer.parseInt(arrayOfStrings[2]))));
+            return true;
         } catch (IOException e) {
             System.out.println("Nie udało się załadować listy autorów.");
+            return false;
         }
     }
 
-    private void readCathegoriesFromFile() {
+    private boolean readCathegoriesFromFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\categories.csv"))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .forEach(arrayOfStrings ->
                             cathegories.add(new Cathegory(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], Integer.parseInt(arrayOfStrings[2]))));
+            return true;
         } catch (IOException e) {
             System.out.println("Nie udało się załadować listy kategorii.");
+            return false;
         }
     }
 
-    private void readUsersAndPasswords() {
+    private boolean readUsersAndPasswords() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\users.txt"))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .forEach(arrayOfStrings ->
                             usersList.add(new User(arrayOfStrings[0], arrayOfStrings[1])));
+            return true;
         } catch (IOException e) {
             System.out.println("Nie udało się załadować użytkowników.");
+            return false;
         }
     }
 
@@ -125,7 +131,7 @@ public class LibraryApp {
         }
     }
 
-    private void saveChangesInBooksListToCsvFile() {
+    private boolean saveChangesInBooksListToCsvFile() {
         try (BufferedWriter bufferedWriter =
                      new BufferedWriter(new FileWriter("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\books.csv"))) {
             for (Book book : books) {
@@ -133,13 +139,15 @@ public class LibraryApp {
             }
             System.out.println("Poprawnie zapisano listę książek.");
             accessToLibraryBooksListPreview();
+            return true;
         } catch (IOException e) {
             System.out.println("Nie dało się zapisać listy książek.");
             accessToLibraryBooksListPreview();
+            return false;
         }
     }
 
-    private void editYearOfPrintingBook() {
+    private boolean editYearOfPrintingBook() {
         System.out.println("Podaj tytuł książki, której datę wydania chcesz edytować:");
         String title = scanner.nextLine().trim();
 
@@ -149,10 +157,12 @@ public class LibraryApp {
                 book.setYear(year);
                 System.out.println("Data wydania książki " + title + " została zaktualizowana.");
                 accessToLibraryBooksListPreview();
+                return true;
             }
         }
         System.out.println("Nie znaleziono ksiązki: " + title + " w bazie danych.");
         accessToLibraryBooksListPreview();
+        return false;
     }
 
     private boolean removeBookByTitle() {
@@ -178,62 +188,90 @@ public class LibraryApp {
         System.out.println("Podaj ISBN książki:");
         String isbnNumber = scanner.nextLine();
         int year = getValidYearOfIssue();
-        System.out.println("Podaj rodzaj okładki (miękka - M, twarda - T):");
-        String typeOfBinding = scanner.nextLine().trim();
+        String typeOfBinding = getValidBindingType();
         Cathegory cathegory = getValidCathegory();
-        List<Author> authors=new ArrayList<>();
-        authors=getValidAuthors();
-        int id = books.get(books.size()-1).getBookId()+1;
-        books.add(new Book(id,title, isbnNumber, year, typeOfBinding, authors, cathegory));
+        List<Author> authors = new ArrayList<>();
+        authors = getValidAuthors();
+        int id = books.get(books.size() - 1).getBookId() + 1;
+        books.add(new Book(id, title, isbnNumber, year, typeOfBinding, authors, cathegory));
         System.out.println("Dodano książkę.");
         accessToLibraryBooksListPreview();
     }
 
+    private String getValidBindingType() {
+        boolean valid = false;
+        String binding = "";
+        while (!valid) {
+            System.out.println("Podaj rodzaj okładki (miękka - M, twarda - T):");
+            binding = scanner.nextLine().trim();
+            if (binding.equalsIgnoreCase("t") || binding.equalsIgnoreCase("m")) {
+                valid = true;
+            } else {
+                System.out.println("Niepoprawny wybór, wybierz M lub T.");
+            }
+        }
+        return binding;
+    }
+
     private List<Author> getValidAuthors() {
-        System.out.println("Podaj id autorów (w formacie np. 1, 2):");
-        String input = scanner.nextLine();
-        try {
-        Arrays.stream(input.split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        } catch (NumberFormatException e) {
-            System.out.println("Format id autorów jest niepoprawny.");
-            getValidAuthors();
+        boolean valid = false;
+        String input = "";
+        while (!valid) {
+            System.out.println("Podaj id autorów (w formacie np. 1, 2):");
+            input = scanner.nextLine();
+            try {
+                Arrays.stream(input.split(","))
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
+                valid = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Format id autorów jest niepoprawny.");
+            }
         }
         return getAuthors(input);
     }
 
     private Cathegory getValidCathegory() {
-        System.out.println("Podaj id kategorii (1-3):");
-        String id = scanner.nextLine();
-        try {
-            // checking valid integer using parseInt() method
-            Integer.parseInt(id);
+        boolean valid = false;
+        String id = "";
+        while (!valid) {
+            System.out.println("Podaj id kategorii (1-"+cathegories.size()+"):");
+            id = scanner.nextLine();
+            try {
+                // checking valid integer using parseInt() method
+                Integer.parseInt(id);
+                valid = true;
 
-        } catch (NumberFormatException e) {
-            System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
-            getValidCathegory();
+            } catch (NumberFormatException e) {
+                System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
+            }
         }
-
-        if (getCathegory(id)!=null){
-            return getCathegory(id);
-        }else{
-            System.out.println("Nie ma takiej kategorii");
-            getValidCathegory();
+        valid = false;
+        while (!valid) {
+            if (getCathegory(id) != null) {
+                valid = true;
+                return getCathegory(id);
+            } else {
+                System.out.println("Nie ma takiej kategorii");
+            }
         }
         return null;
     }
 
 
     private int getValidYearOfIssue() {
-        System.out.println("Podaj rok wydania książki:");
-        String yearString = scanner.nextLine().trim();
-        try {
-            // checking valid integer using parseInt() method
-            Integer.parseInt(yearString);
-        } catch (NumberFormatException e) {
-            System.out.println(yearString + " nie jest poprawny.");
-            getValidYearOfIssue();
+        boolean valid = false;
+        String yearString = "";
+        while (!valid) {
+            System.out.println("Podaj rok wydania książki:");
+            yearString = scanner.nextLine().trim();
+            try {
+                // checking valid integer using parseInt() method
+                Integer.parseInt(yearString);
+                valid = true;
+            } catch (NumberFormatException e) {
+                System.out.println(yearString + " nie jest poprawny.");
+            }
         }
         return Integer.parseInt(yearString);
     }
@@ -305,7 +343,7 @@ public class LibraryApp {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .forEach(arrayOfStrings ->
-                            books.add(new Book(Integer.parseInt(arrayOfStrings[0]),arrayOfStrings[1], arrayOfStrings[2], Integer.parseInt(arrayOfStrings[3]),
+                            books.add(new Book(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], arrayOfStrings[2], Integer.parseInt(arrayOfStrings[3]),
                                     arrayOfStrings[4], getAuthors(arrayOfStrings[5]), getCathegory(arrayOfStrings[6]))));
         } catch (IOException e) {
             System.out.println("Nie udało się załadować listy książek.");
