@@ -1,7 +1,6 @@
 package App;
 
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class LibraryApp {
-
+    //TODO cala klasa do podzialu
     private List<Book> books = new ArrayList<>();
     private List<Author> authors = new ArrayList<>();
     private List<Cathegory> cathegories = new ArrayList<>();
@@ -17,52 +16,17 @@ public class LibraryApp {
     private boolean closeApp = false;
     private Scanner scanner = new Scanner(System.in);
 
+    private FileReaderToList fileReader = new FileReaderToList();//todo do klas
+    private FileWriterFromList fileWriter = new FileWriterFromList();//todo do klas
+
 
     public LibraryApp() {
-        readCathegoriesFromFile();
-        readAuthorsFromFile();
-        readListOfBooksFromFile();
-        readUsersAndPasswords();
+        fileReader.readCathegoriesFromFile(cathegories);
+        fileReader.readAuthorsFromFile(authors);
+        fileReader.readListOfBooksFromFile(books, this);
+        fileReader.readUsersAndPasswords(usersList);
     }
 
-    private boolean readAuthorsFromFile() {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\authors.csv"))) {
-            bufferedReader.lines()
-                    .map(line -> line.split(";"))
-                    .forEach(arrayOfStrings ->
-                            authors.add(new Author(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], Integer.parseInt(arrayOfStrings[2]))));
-            return true;
-        } catch (IOException e) {
-            System.out.println("Nie udało się załadować listy autorów.");
-            return false;
-        }
-    }
-
-    private boolean readCathegoriesFromFile() {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\categories.csv"))) {
-            bufferedReader.lines()
-                    .map(line -> line.split(";"))
-                    .forEach(arrayOfStrings ->
-                            cathegories.add(new Cathegory(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], Integer.parseInt(arrayOfStrings[2]))));
-            return true;
-        } catch (IOException e) {
-            System.out.println("Nie udało się załadować listy kategorii.");
-            return false;
-        }
-    }
-
-    private boolean readUsersAndPasswords() {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\users.txt"))) {
-            bufferedReader.lines()
-                    .map(line -> line.split(";"))
-                    .forEach(arrayOfStrings ->
-                            usersList.add(new User(arrayOfStrings[0], arrayOfStrings[1])));
-            return true;
-        } catch (IOException e) {
-            System.out.println("Nie udało się załadować użytkowników.");
-            return false;
-        }
-    }
 
     public void startApp() {
 
@@ -117,7 +81,7 @@ public class LibraryApp {
                     editYearOfPrintingBook();
                     break;
                 case "5":
-                    saveChangesInBooksListToCsvFile();
+                    fileWriter.saveChangesInBooksListToCsvFile(books);
                     break;
                 case "6":
                     startApp();
@@ -131,21 +95,7 @@ public class LibraryApp {
         }
     }
 
-    private boolean saveChangesInBooksListToCsvFile() {
-        try (BufferedWriter bufferedWriter =
-                     new BufferedWriter(new FileWriter("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\books.csv"))) {
-            for (Book book : books) {
-                bufferedWriter.write(book.bookToCsv() + "\n");
-            }
-            System.out.println("Poprawnie zapisano listę książek.");
-            accessToLibraryBooksListPreview();
-            return true;
-        } catch (IOException e) {
-            System.out.println("Nie dało się zapisać listy książek.");
-            accessToLibraryBooksListPreview();
-            return false;
-        }
-    }
+
 
     private boolean editYearOfPrintingBook() {
         System.out.println("Podaj tytuł książki, której datę wydania chcesz edytować:");
@@ -161,7 +111,7 @@ public class LibraryApp {
             }
         }
         System.out.println("Nie znaleziono ksiązki: " + title + " w bazie danych.");
-        accessToLibraryBooksListPreview();
+        accessToLibraryBooksListPreview(); //todo
         return false;
     }
 
@@ -192,7 +142,7 @@ public class LibraryApp {
         Cathegory cathegory = getValidCathegory();
         List<Author> authors = new ArrayList<>();
         authors = getValidAuthors();
-        int id = books.get(books.size() - 1).getBookId() + 1;
+        int id = books.get(books.size() - 1).getBookId() + 1; //TODO maksyymalne id
         books.add(new Book(id, title, isbnNumber, year, typeOfBinding, authors, cathegory));
         System.out.println("Dodano książkę.");
         accessToLibraryBooksListPreview();
@@ -210,19 +160,22 @@ public class LibraryApp {
                 System.out.println("Niepoprawny wybór, wybierz M lub T.");
             }
         }
-        return binding;
+        return binding; //TODO enum
     }
 
     private List<Author> getValidAuthors() {
         boolean valid = false;
         String input = "";
         while (!valid) {
+            for (Author author : authors) {
+                System.out.println(author);
+            }
             System.out.println("Podaj id autorów (w formacie np. 1, 2):");
             input = scanner.nextLine();
             try {
                 Arrays.stream(input.split(","))
                         .map(Integer::parseInt)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toList()); //TODO mozna bez collect
                 valid = true;
             } catch (NumberFormatException e) {
                 System.out.println("Format id autorów jest niepoprawny.");
@@ -235,10 +188,14 @@ public class LibraryApp {
         boolean valid = false;
         String id = "";
         while (!valid) {
-            System.out.println("Podaj id kategorii (1-"+cathegories.size()+"):");
+            for (Cathegory cathegory : cathegories) {
+                System.out.println(cathegory);
+            }
+            System.out.println("Podaj id kategorii (1-" + cathegories.size() + "):");
             id = scanner.nextLine();
             try {
                 // checking valid integer using parseInt() method
+                //TODO StringUtils apache commons lang isNumeric()
                 Integer.parseInt(id);
                 valid = true;
 
@@ -247,7 +204,7 @@ public class LibraryApp {
             }
         }
         valid = false;
-        while (!valid) {
+        while (!valid) { //TODO wyslij kod
             if (getCathegory(id) != null) {
                 valid = true;
                 return getCathegory(id);
@@ -285,21 +242,10 @@ public class LibraryApp {
         }
         String password = addingPassword();
         usersList.add(new User(userName, password));
-        try (BufferedWriter bufferedWriter =
-                     new BufferedWriter(new FileWriter("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\users.txt", true))) {
-            if (usersList.size() <= 1) {
-                bufferedWriter.write(userName + ";" + password);
-            } else {
-                bufferedWriter.write("\n" + userName + ";" + password);
-            }
-            System.out.println("Poprawnie zarejestrowano użytkownika");
-        } catch (IOException e) {
-            System.out.println("Nie dało się zapisać użytkownika");
-            return false;
-        }
-        startApp();
-        return true;
+       return fileWriter.addUserToFile(userName, password,usersList);
     }
+
+
 
     private String addingPassword() {
         System.out.println("Podaj hasło (co najmniej 3 litery):");
@@ -330,6 +276,7 @@ public class LibraryApp {
     }
 
     private boolean isOnTheListOfUsers(String username) {
+//        usersList.stream().anyMatch(user -> user.isUsernameValid(username)); //TODO
         for (User user : usersList) {
             if (user.isUsernameValid(username)) {
                 return true;
@@ -338,19 +285,8 @@ public class LibraryApp {
         return false;
     }
 
-    private void readListOfBooksFromFile() {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\books.csv"))) {
-            bufferedReader.lines()
-                    .map(line -> line.split(";"))
-                    .forEach(arrayOfStrings ->
-                            books.add(new Book(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], arrayOfStrings[2], Integer.parseInt(arrayOfStrings[3]),
-                                    arrayOfStrings[4], getAuthors(arrayOfStrings[5]), getCathegory(arrayOfStrings[6]))));
-        } catch (IOException e) {
-            System.out.println("Nie udało się załadować listy książek.");
-        }
-    }
 
-    private Cathegory getCathegory(String idOfCathegory) {
+    Cathegory getCathegory(String idOfCathegory) {
         for (Cathegory cathegory : cathegories) {
             if (cathegory.getCathegoryId() == Integer.parseInt(idOfCathegory)) {
                 return cathegory;
@@ -359,13 +295,13 @@ public class LibraryApp {
         return null;
     }
 
-    private List<Author> getAuthors(String authors) {
+    List<Author> getAuthors(String authors) {
         return Arrays.stream(authors.split(","))
                 .map(id -> getAuthorById(Integer.parseInt(id)))
                 .collect(Collectors.toList());
     }
 
-    private Author getAuthorById(int id) {
+    Author getAuthorById(int id) {
         for (Author author : authors) {
             if (author.getAuthorsId() == id) {
                 return author;

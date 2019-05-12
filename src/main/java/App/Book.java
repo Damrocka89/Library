@@ -18,7 +18,6 @@ package App;
 //3
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +28,12 @@ public class Book {
     private String isbnNumber;
     private int year;
     private String typeOfBinding;
-    private List<Author> authors = new ArrayList<>();
+    private List<Author> authors;
     private Cathegory cathegory;
 
     StringBuilder sb = new StringBuilder();
 
-    protected Book(int bookId, String title, String isbnNumber, int year, String typeOfBinding, List<Author> authors, Cathegory cathegory) {
+    Book(int bookId, String title, String isbnNumber, int year, String typeOfBinding, List<Author> authors, Cathegory cathegory) {
         this.bookId = bookId;
         this.title = title;
         this.isbnNumber = isbnNumber;
@@ -44,7 +43,7 @@ public class Book {
         this.cathegory = cathegory;
     }
 
-    protected String bookToCsv() {
+    String bookToCsv() {
         return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" +authorsIdsToCSV()+";"+cathegory.getCathegoryId();
     }
 
@@ -61,8 +60,12 @@ public class Book {
 
     @Override
     public String toString() {
-        return title + " " + year + " " + isbnNumber;
+        return title + " " + year + " " + isbnNumber+" ";
     }
+
+//    private String getAuthorsNames(){
+//
+//    }
 
     protected String getTitle() {
         return title;

@@ -6,7 +6,7 @@ public class Author {
     private String nameAndSurnameOfAuthor;
     private int authorsAge;
 
-    public Author(int authorsId,String nameAndSurnameOfAuthor, int authorsAge) {
+    public Author(int authorsId, String nameAndSurnameOfAuthor, int authorsAge) {
         this.authorsId = authorsId;
         this.nameAndSurnameOfAuthor = nameAndSurnameOfAuthor;
         this.authorsAge = authorsAge;
@@ -15,7 +15,13 @@ public class Author {
     public int getAuthorsId() {
         return authorsId;
     }
-    public String toCsv() {
-        return authorsId+";"+nameAndSurnameOfAuthor+";"+authorsAge;
+
+    public String toCsv() { //TODO nieuzywana
+        return authorsId + ";" + nameAndSurnameOfAuthor + ";" + authorsAge;
+    }
+
+    @Override
+    public String toString() {
+        return authorsId + " - " + nameAndSurnameOfAuthor;
     }
 }
