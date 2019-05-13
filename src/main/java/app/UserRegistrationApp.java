@@ -37,16 +37,35 @@ public class UserRegistrationApp {
 
 
     private String addingPassword() {
-        System.out.println("Podaj hasło (co najmniej 3 litery):");
-        String password = scanner.nextLine().trim();
-        if (password.length() < 3) {
-            System.out.println("Hasło za krótkie.");
-            addingPassword();
-        }
-        System.out.println("Powtórz hasło:");
-        if (!scanner.nextLine().trim().equals(password)) {
-            System.out.println("Niepoprawnie.");
-            addingPassword();
+         String password="";
+         boolean isCorrectlyCreatedPassword=false;
+
+         while (!isCorrectlyCreatedPassword) {
+
+             password = getPasswordLongEnough();
+
+             System.out.println("Powtórz hasło:");
+             if (!scanner.nextLine().trim().equals(password)) {
+                 System.out.println("Niepoprawnie.");
+             }else{
+                 isCorrectlyCreatedPassword=true;
+             }
+         }
+        return password;
+    }
+
+    private String getPasswordLongEnough() {
+        String password="";
+        boolean isPasswordTooShort=true;
+
+        while (isPasswordTooShort) {
+            System.out.println("Podaj hasło (co najmniej 3 litery):");
+            password = scanner.nextLine().trim();
+            if (password.length() < 3) {
+                System.out.println("Hasło za krótkie.");
+            }else{
+                isPasswordTooShort=false;
+            }
         }
         return password;
     }

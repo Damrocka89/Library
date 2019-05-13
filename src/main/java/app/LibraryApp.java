@@ -15,32 +15,25 @@ public class LibraryApp {
     private boolean closeApp = false;
     private Scanner scanner = new Scanner(System.in);
 
-    private FileWriterFromList fileWriter = new FileWriterFromList();
-
     private UsersEditor usersEditor;
     private BookListEditor bookListEditor;
 
 
-
     public LibraryApp() {
         FileReaderToList fileReader = new FileReaderToList();
+        FileWriterFromList fileWriter = new FileWriterFromList();
 
         fileReader.readCathegoriesFromFile(categories);
         fileReader.readAuthorsFromFile(authors);
 
-        usersEditor=new UsersEditor(fileReader,fileWriter);
-        bookListEditor = new BookListEditor(fileReader,this, fileWriter);
+        usersEditor = new UsersEditor(fileReader, fileWriter);
+        bookListEditor = new BookListEditor(fileReader, this, fileWriter);
     }
 
 
     public void startApp() {
-
-        System.out.println("Wybierz opcję: \n" +
-                "1. Zaloguj. \n" +
-                "2. Zarejestruj. \n" +
-                "3. Wyjdź.");
-
         while (!closeApp) {
+            printLoginRegisterMenu();
             switch (scanner.nextLine().trim()) {
                 case "1":
                     if (usersEditor.login()) {
@@ -60,17 +53,17 @@ public class LibraryApp {
         }
     }
 
+    private void printLoginRegisterMenu() {
+        System.out.println("Wybierz opcję: \n" +
+                "1. Zaloguj. \n" +
+                "2. Zarejestruj. \n" +
+                "3. Wyjdź.");
+    }
+
     private void accessToLibraryBooksListPreview() {
         while (!closeApp) {
 
-            System.out.println("Wybierz polecenie: \n" +
-                    "1. Wyświetl listę książek. \n" +
-                    "2. Dodaj nową książkę. \n" +
-                    "3. Usuń książkę po nazwie. \n" +
-                    "4. Edytuj rok wydania książki. \n" +
-                    "5. Zapisz zmiany. \n" +
-                    "6. Cofnij do poprzedniego Menu. \n" +
-                    "7. Wyjdź.");
+            printLibraryMenu();
 
             switch (scanner.nextLine().trim()) {
                 case "1":
@@ -98,6 +91,17 @@ public class LibraryApp {
                     System.out.println("Nieprawidłowe polecenie.");
             }
         }
+    }
+
+    private void printLibraryMenu() {
+        System.out.println("Wybierz polecenie: \n" +
+                "1. Wyświetl listę książek. \n" +
+                "2. Dodaj nową książkę. \n" +
+                "3. Usuń książkę po nazwie. \n" +
+                "4. Edytuj rok wydania książki. \n" +
+                "5. Zapisz zmiany. \n" +
+                "6. Cofnij do poprzedniego Menu. \n" +
+                "7. Wyjdź.");
     }
 
     Category getCathegory(String idOfCathegory) {
