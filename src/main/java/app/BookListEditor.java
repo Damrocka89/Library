@@ -103,12 +103,17 @@ public class BookListEditor {
             System.out.println("Podaj id autorów (w formacie np. 1, 2):");
             input = scanner.nextLine();
             valid = Arrays.stream(input.split(","))
-                    .allMatch(StringUtils::isNumeric);
+                    .allMatch(authorsId -> StringUtils.isNumeric(authorsId) && isThisAuthorIdExisting(authorsId, authors));
             if (!valid) {
                 System.out.println("Format id autorów jest niepoprawny.");
             }
         }
         return libraryApp.getAuthors(input);
+    }
+
+    private boolean isThisAuthorIdExisting(String authorsId, List<Author> authors) {
+        return authors.stream()
+                .anyMatch(author -> String.valueOf(author.getAuthorsId()).equals(authorsId));
     }
 
     Category getValidCathegory(List<Category> categories, LibraryApp libraryApp) {

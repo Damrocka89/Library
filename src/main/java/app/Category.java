@@ -16,11 +16,6 @@ public class Category {
         return cathegoryId;
     }
 
-
-    public String toCsv() {
-        return cathegoryId + ";" + cathegoryName + ";" + cathegoryPriorityOfDisplay;
-    }
-
     @Override
     public String toString() {
         return cathegoryId + " - " + cathegoryName;

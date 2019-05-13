@@ -16,10 +16,6 @@ public class Author {
         return authorsId;
     }
 
-    public String toCsv() { //TODO nieuzywana
-        return authorsId + ";" + nameAndSurnameOfAuthor + ";" + authorsAge;
-    }
-
     @Override
     public String toString() {
         return authorsId + " - " + nameAndSurnameOfAuthor;
