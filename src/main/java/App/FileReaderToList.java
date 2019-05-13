@@ -20,12 +20,12 @@ public class FileReaderToList {
         }
     }
 
-     boolean readCathegoriesFromFile(List<Cathegory> cathegories) {
+     boolean readCathegoriesFromFile(List<Category> cathegories) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\categories.csv"))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .forEach(arrayOfStrings ->
-                            cathegories.add(new Cathegory(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], Integer.parseInt(arrayOfStrings[2]))));
+                            cathegories.add(new Category(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], Integer.parseInt(arrayOfStrings[2]))));
             return true;
         } catch (IOException e) {
             System.out.println("Nie udało się załadować listy kategorii.");

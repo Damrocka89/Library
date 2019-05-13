@@ -29,22 +29,22 @@ public class Book {
     private int year;
     private String typeOfBinding;
     private List<Author> authors;
-    private Cathegory cathegory;
+    private Category category;
 
     StringBuilder sb = new StringBuilder();
 
-    Book(int bookId, String title, String isbnNumber, int year, String typeOfBinding, List<Author> authors, Cathegory cathegory) {
+    Book(int bookId, String title, String isbnNumber, int year, String typeOfBinding, List<Author> authors, Category category) {
         this.bookId = bookId;
         this.title = title;
         this.isbnNumber = isbnNumber;
         this.year = year;
         this.typeOfBinding = typeOfBinding;
         this.authors = authors;
-        this.cathegory = cathegory;
+        this.category = category;
     }
 
     String bookToCsv() {
-        return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" +authorsIdsToCSV()+";"+cathegory.getCathegoryId();
+        return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" +authorsIdsToCSV()+";"+ category.getCategoryId();
     }
 
     public int getBookId() {

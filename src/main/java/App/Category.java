@@ -1,18 +1,18 @@
 package App;
 
-public class Cathegory {
+public class Category {
 
     private int cathegoryId;
     private String cathegoryName;
     private int cathegoryPriorityOfDisplay;
 
-    public Cathegory(int cathegoryId, String cathegoryName, int cathegoryPriorityOfDisplay) {
+    public Category(int cathegoryId, String cathegoryName, int cathegoryPriorityOfDisplay) {
         this.cathegoryId = cathegoryId;
         this.cathegoryName = cathegoryName;
         this.cathegoryPriorityOfDisplay = cathegoryPriorityOfDisplay;
     }
 
-    public int getCathegoryId() {
+    public int getCategoryId() {
         return cathegoryId;
     }
 
