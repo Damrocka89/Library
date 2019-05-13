@@ -24,4 +24,8 @@ public class Author {
     public String toString() {
         return authorsId + " - " + nameAndSurnameOfAuthor;
     }
+
+     String getNameAndSurnameOfAuthor() {
+        return nameAndSurnameOfAuthor;
+    }
 }

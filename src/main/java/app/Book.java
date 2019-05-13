@@ -27,13 +27,13 @@ public class Book {
     private String title;
     private String isbnNumber;
     private int year;
-    private String typeOfBinding;
+    private BookBindingType typeOfBinding;
     private List<Author> authors;
     private Category category;
 
     StringBuilder sb = new StringBuilder();
 
-    Book(int bookId, String title, String isbnNumber, int year, String typeOfBinding, List<Author> authors, Category category) {
+    Book(int bookId, String title, String isbnNumber, int year, BookBindingType typeOfBinding, List<Author> authors, Category category) {
         this.bookId = bookId;
         this.title = title;
         this.isbnNumber = isbnNumber;
@@ -44,7 +44,7 @@ public class Book {
     }
 
     String bookToCsv() {
-        return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" +authorsIdsToCSV()+";"+ category.getCategoryId();
+        return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" + authorsIdsToCSV() + ";" + category.getCategoryId();
     }
 
     public int getBookId() {
@@ -60,12 +60,14 @@ public class Book {
 
     @Override
     public String toString() {
-        return title + " " + year + " " + isbnNumber+" ";
+        return title + " " +getAuthorsNames()+" "+ year + " " + isbnNumber + " ";
     }
 
-//    private String getAuthorsNames(){
-//
-//    }
+    private String getAuthorsNames() {
+        return authors.stream()
+                .map(Author::getNameAndSurnameOfAuthor)
+                .collect(Collectors.joining(","));
+    }
 
     protected String getTitle() {
         return title;
@@ -73,14 +75,6 @@ public class Book {
 
     protected void setYear(int year) {
         this.year = year;
-    }
-
-    protected String getIsbnNumber() {
-        return isbnNumber;
-    }
-
-    protected int getYear() {
-        return year;
     }
 
 

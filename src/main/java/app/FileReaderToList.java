@@ -54,7 +54,7 @@ public class FileReaderToList {
                     .map(line -> line.split(";"))
                     .forEach(arrayOfStrings ->
                             books.add(new Book(Integer.parseInt(arrayOfStrings[0]), arrayOfStrings[1], arrayOfStrings[2], Integer.parseInt(arrayOfStrings[3]),
-                                    arrayOfStrings[4], app.getAuthors(arrayOfStrings[5]), app.getCathegory(arrayOfStrings[6]))));
+                                    BookBindingType.valueOf(arrayOfStrings[4].toUpperCase()), app.getAuthors(arrayOfStrings[5]), app.getCathegory(arrayOfStrings[6]))));
         } catch (IOException e) {
             System.out.println("Nie udało się załadować listy książek.");
         }
