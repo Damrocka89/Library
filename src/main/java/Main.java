@@ -1,4 +1,4 @@
-import App.LibraryApp;
+import app.LibraryApp;
 
 public class Main {
 

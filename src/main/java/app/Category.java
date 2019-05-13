@@ -1,4 +1,4 @@
-package App;
+package app;
 
 public class Category {
 
@@ -6,7 +6,7 @@ public class Category {
     private String cathegoryName;
     private int cathegoryPriorityOfDisplay;
 
-    public Category(int cathegoryId, String cathegoryName, int cathegoryPriorityOfDisplay) {
+     Category(int cathegoryId, String cathegoryName, int cathegoryPriorityOfDisplay) {
         this.cathegoryId = cathegoryId;
         this.cathegoryName = cathegoryName;
         this.cathegoryPriorityOfDisplay = cathegoryPriorityOfDisplay;

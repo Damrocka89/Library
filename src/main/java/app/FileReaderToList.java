@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileReaderToList {
+
+     FileReaderToList() {
+    }
 
     boolean readAuthorsFromFile(List<Author> authors) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\authors.csv"))) {

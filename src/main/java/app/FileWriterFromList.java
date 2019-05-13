@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -7,8 +7,10 @@ import java.util.List;
 
 public class FileWriterFromList {
 
+     FileWriterFromList() {
+    }
 
-     boolean saveChangesInBooksListToCsvFile(List<Book> books) {
+    boolean saveChangesInBooksListToCsvFile(List<Book> books) {
         try (BufferedWriter bufferedWriter =
                      new BufferedWriter(new FileWriter("D:\\Users\\ewkra\\IdeaProjects\\Library\\src\\main\\resources\\books.csv"))) {
             for (Book book : books) {

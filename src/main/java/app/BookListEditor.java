@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 public class BookListEditor {
 
-    private List<Book> books;
-    Scanner scanner = new Scanner(System.in);
+    private List<Book> books=new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+    private FileWriterFromList fileWriter;
 
-    public BookListEditor(List<Book> books) {
-        this.books = books;
+     BookListEditor(FileReaderToList fileReader, LibraryApp libraryApp, FileWriterFromList fileWriter) {
+         this.fileWriter=fileWriter;
+         fileReader.readListOfBooksFromFile(books, libraryApp);
     }
 
     boolean editYearOfPrintingBook() {
@@ -54,7 +56,7 @@ public class BookListEditor {
         int year = getValidYearOfIssue();
         String typeOfBinding = getValidBindingType();
         Category category = getValidCathegory(categoryList,libraryApp);
-        List<Author> authors = new ArrayList<>();
+        List<Author> authors;
         authors = getValidAuthors(authorsList, libraryApp);
         int id = books.get(books.size() - 1).getBookId() + 1; //TODO maksyymalne id
         books.add(new Book(id, title, isbnNumber, year, typeOfBinding, authors, category));
@@ -147,4 +149,11 @@ public class BookListEditor {
     }
 
 
+     void printBooks() {
+        books.forEach(System.out::println);
+    }
+
+     void saveChanges() {
+        fileWriter.saveChangesInBooksListToCsvFile(books);
+    }
 }
