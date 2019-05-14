@@ -3,7 +3,7 @@ package app;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserLoginApp {
+class UserLoginApp {
 
     private List<User> userList;
     private Scanner scanner=new Scanner(System.in);

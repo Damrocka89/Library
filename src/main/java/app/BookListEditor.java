@@ -10,18 +10,18 @@ import java.util.Scanner;
 import static app.BookBindingType.M;
 import static app.BookBindingType.T;
 
-public class BookListEditor {
+class BookListEditor {
 
     private List<Book> books = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
-    private FileWriterFromList fileWriter;
+    private FileWriterToFileFromList fileWriter;
 
-    BookListEditor(FileReaderToList fileReader, LibraryApp libraryApp, FileWriterFromList fileWriter) {
+    BookListEditor(FileReaderFromFileToList fileReader, LibraryApp libraryApp, FileWriterToFileFromList fileWriter) {
         this.fileWriter = fileWriter;
         fileReader.readListOfBooksFromFile(books, libraryApp);
     }
 
-    boolean editYearOfPrintingBook() {
+    void editYearOfPrintingBook() {
         System.out.println("Podaj tytuł książki, której datę wydania chcesz edytować:");
         String title = scanner.nextLine().trim();
 
@@ -30,14 +30,13 @@ public class BookListEditor {
                 int year = getValidYearOfIssue();
                 book.setYear(year);
                 System.out.println("Data wydania książki " + title + " została zaktualizowana.");
-                return true;
+                return;
             }
         }
         System.out.println("Nie znaleziono ksiązki: " + title + " w bazie danych.");
-        return false;
     }
 
-    boolean removeBookByTitle() {
+    void removeBookByTitle() {
         System.out.println("Podaj tytuł książki, którą chcesz usunąć:");
         String title = scanner.nextLine().trim();
 
@@ -45,11 +44,10 @@ public class BookListEditor {
             if (book.getTitle().equals(title)) {
                 books.remove(book);
                 System.out.println("Książka " + title + " została usunięta.");
-                return true;
+                return;
             }
         }
         System.out.println("Nie znaleziono ksiązki: " + title + " w bazie danych.");
-        return false;
     }
 
     void addNewBook(List<Author> authorsList, List<Category> categoryList, LibraryApp libraryApp) {
@@ -73,7 +71,7 @@ public class BookListEditor {
         System.out.println("Dodano książkę.");
     }
 
-    BookBindingType getValidBindingType() {
+    private BookBindingType getValidBindingType() {
         boolean valid = false;
         BookBindingType bindingType = M;
 
@@ -92,7 +90,7 @@ public class BookListEditor {
         return bindingType;
     }
 
-    List<Author> getValidAuthorsIds(List<Author> authors, LibraryApp libraryApp) {
+    private List<Author> getValidAuthorsIds(List<Author> authors, LibraryApp libraryApp) {
         boolean valid = false;
         String input = "";
 
@@ -116,7 +114,7 @@ public class BookListEditor {
                 .anyMatch(author -> String.valueOf(author.getAuthorsId()).equals(authorsId));
     }
 
-    Category getValidCathegory(List<Category> categories, LibraryApp libraryApp) {
+    private Category getValidCathegory(List<Category> categories, LibraryApp libraryApp) {
         boolean valid = false;
         String id = "";
         while (!valid) {
@@ -139,7 +137,7 @@ public class BookListEditor {
     }
 
 
-    int getValidYearOfIssue() {
+    private int getValidYearOfIssue() {
         boolean valid = false;
         String yearString = "";
         while (!valid) {

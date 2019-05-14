@@ -3,15 +3,15 @@ package app;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersEditor {
+class UsersEditor {
 
     private List<User> usersList = new ArrayList<>();
     private UserRegistrationApp userRegistrationApp;
     private UserLoginApp userLoginApp;
 
-    private FileWriterFromList fileWriter = new FileWriterFromList();
+    private FileWriterToFileFromList fileWriter;
 
-    public UsersEditor(FileReaderToList fileReader, FileWriterFromList fileWriterFromList) {
+    public UsersEditor(FileReaderFromFileToList fileReader, FileWriterToFileFromList fileWriterFromList) {
         fileReader.readUsersAndPasswords(usersList);
         this.userRegistrationApp = new UserRegistrationApp(usersList);
         this.userLoginApp = new UserLoginApp(usersList);

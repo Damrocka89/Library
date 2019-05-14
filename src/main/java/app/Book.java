@@ -21,7 +21,7 @@ package app;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Book {
+class Book {
 
     private int bookId;
     private String title;
@@ -30,8 +30,6 @@ public class Book {
     private BookBindingType typeOfBinding;
     private List<Author> authors;
     private Category category;
-
-    StringBuilder sb = new StringBuilder();
 
     Book(int bookId, String title, String isbnNumber, int year, BookBindingType typeOfBinding, List<Author> authors, Category category) {
         this.bookId = bookId;
@@ -69,11 +67,11 @@ public class Book {
                 .collect(Collectors.joining(","));
     }
 
-    protected String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    protected void setYear(int year) {
+    void setYear(int year) {
         this.year = year;
     }
 

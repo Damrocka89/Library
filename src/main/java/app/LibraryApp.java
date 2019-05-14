@@ -20,8 +20,8 @@ public class LibraryApp {
 
 
     public LibraryApp() {
-        FileReaderToList fileReader = new FileReaderToList();
-        FileWriterFromList fileWriter = new FileWriterFromList();
+        FileReaderFromFileToList fileReader = new FileReaderFromFileToList();
+        FileWriterToFileFromList fileWriter = new FileWriterToFileFromList();
 
         fileReader.readCathegoriesFromFile(categories);
         fileReader.readAuthorsFromFile(authors);

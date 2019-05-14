@@ -3,16 +3,16 @@ package app;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserRegistrationApp {
+class UserRegistrationApp {
 
     private List<User> usersList;
-    Scanner scanner=new Scanner(System.in);
+    private Scanner scanner=new Scanner(System.in);
 
      UserRegistrationApp(List<User> users) {
         this.usersList = users;
     }
 
-     boolean registerNewUser(FileWriterFromList fileWriter) {
+     void registerNewUser(FileWriterToFileFromList fileWriter) {
         String userName="";
         boolean isAlreadyExistingUser=true;
         while (isAlreadyExistingUser) {
@@ -26,8 +26,8 @@ public class UserRegistrationApp {
         }
         String password = addingPassword();
         usersList.add(new User(userName, password));
-        return fileWriter.addUserToFile(userName, password, usersList);
-    }
+         fileWriter.addUserToFile(userName, password, usersList);
+     }
 
      boolean isOnTheListOfUsers(String username) {
         return usersList.stream()
