@@ -1,22 +1,5 @@
 package app;
 
-//
-//Identyfikator
-//Tytuł
-//Numer isbn
-//Rok wydania
-//Rodzaj oprawy (twarda/miękka)
-//Id autorów książki
-//Id kategorii książki
-
-//1
-//Clean Code
-//132350882
-//2008
-//T
-//1,2,3
-//3
-
 
 import java.util.List;
 import java.util.stream.Collectors;

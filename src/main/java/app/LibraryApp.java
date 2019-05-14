@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 public class LibraryApp {
     //TODO cala klasa do podzialu
+        //      trochę podzieliłam
+
+
     private List<Author> authors = new ArrayList<>();
     private List<Category> categories = new ArrayList<>();
 
