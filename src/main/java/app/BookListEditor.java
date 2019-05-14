@@ -115,8 +115,8 @@ class BookListEditor {
     }
 
     private Category getValidCathegory(List<Category> categories, LibraryApp libraryApp) {
-        boolean valid = false;
         String id = "";
+        boolean valid = false;
         while (!valid) {
             for (Category category : categories) {
                 System.out.println(category);
@@ -125,9 +125,14 @@ class BookListEditor {
             id = scanner.nextLine();
 
             valid = StringUtils.isNumeric(id);
-
-            if (libraryApp.getCathegory(id) == null) {
-                valid = false;
+            if (!valid) {
+                System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
+            }
+        }
+        valid = false;
+        while (!valid) {
+            if (libraryApp.getCathegory(id) != null) {
+                valid = true;
             }
             if (!valid) {
                 System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
