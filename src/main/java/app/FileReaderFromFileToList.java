@@ -10,23 +10,12 @@ import java.util.stream.Collectors;
 
 class FileReaderFromFileToList {
 
-    private List<Author> authors;
-    private List<Category> categories;
-
     private static FileReaderFromFileToList instance;
 
     private FileReaderFromFileToList() {
-        authors = readAuthorsFromFile();
-        categories = readCathegoriesFromFile();
+
     }
 
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
 
     List<Author> readAuthorsFromFile() {
         List<Author> authors = new ArrayList<>();
@@ -58,7 +47,7 @@ class FileReaderFromFileToList {
         return cathegories;
     }
 
-     Category getCategoryFromDataArray(String[] arrayOfCategoryData) {
+    Category getCategoryFromDataArray(String[] arrayOfCategoryData) {
         return new Category(Integer.parseInt(arrayOfCategoryData[0]), arrayOfCategoryData[1], Integer.parseInt(arrayOfCategoryData[2]));
     }
 
@@ -79,12 +68,12 @@ class FileReaderFromFileToList {
         return new User(usersDataArray[0], usersDataArray[1]);
     }
 
-    List<Book> readListOfBooksFromFile() {
+    List<Book> readListOfBooksFromFile(List<Category> categories, List<Author> authors) {
         List<Book> books = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\books.csv"))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
-                    .map(arrayOfBooksData -> getBookFromDataArray(arrayOfBooksData))
+                    .map(arrayOfBooksData -> getBookFromDataArray(arrayOfBooksData, categories, authors))
                     .forEach(books::add);
         } catch (IOException e) {
             System.out.println("Nie udało się załadować listy książek.");
@@ -92,12 +81,12 @@ class FileReaderFromFileToList {
         return books;
     }
 
-    private Book getBookFromDataArray(String[] arrayOfBooksData) {
+    private Book getBookFromDataArray(String[] arrayOfBooksData, List<Category> categories, List<Author> authors) {
         return new Book(Integer.parseInt(arrayOfBooksData[0]), arrayOfBooksData[1], arrayOfBooksData[2], Integer.parseInt(arrayOfBooksData[3]),
-                BookBindingType.valueOf(arrayOfBooksData[4].toUpperCase()), getAuthors(arrayOfBooksData[5]), getCathegory(arrayOfBooksData[6]));
+                BookBindingType.valueOf(arrayOfBooksData[4].toUpperCase()), getAuthors(arrayOfBooksData[5], authors), getCathegory(arrayOfBooksData[6], categories));
     }
 
-    Category getCathegory(String idOfCathegory) {
+    Category getCathegory(String idOfCathegory, List<Category> categories) {
         for (Category category : categories) {
             if (category.getCategoryId() == Integer.parseInt(idOfCathegory)) {
                 return category;
@@ -106,13 +95,13 @@ class FileReaderFromFileToList {
         return null;
     }
 
-    List<Author> getAuthors(String authors) {
+    List<Author> getAuthors(String authors, List<Author> authorsList) {
         return Arrays.stream(authors.split(","))
-                .map(id -> getAuthorById(Integer.parseInt(id)))
+                .map(id -> getAuthorById(Integer.parseInt(id), authorsList))
                 .collect(Collectors.toList());
     }
 
-    private Author getAuthorById(int id) {
+    private Author getAuthorById(int id, List<Author> authors) {
         for (Author author : authors) {
             if (author.getAuthorsId() == id) {
                 return author;

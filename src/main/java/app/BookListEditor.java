@@ -11,13 +11,12 @@ import static app.BookBindingType.T;
 
 class BookListEditor extends ListEditor{
 
-    private List<Book> books;
     private Scanner scanner = new Scanner(System.in);
-    private FileWriterToFileFromList fileWriter=FileWriterToFileFromList.getInstance();;
+    private FileWriterToFileFromList fileWriter=FileWriterToFileFromList.getInstance();
     private FileReaderFromFileToList fileReader=FileReaderFromFileToList.getInstance();
 
-    BookListEditor() {
-        books=fileReader.readListOfBooksFromFile();
+    public BookListEditor() {
+        books=fileReader.readListOfBooksFromFile(categories,authors);
     }
 
     void editYearOfPrintingBook() {
@@ -59,14 +58,14 @@ class BookListEditor extends ListEditor{
         int year = getValidYearOfIssue();
         BookBindingType typeOfBinding = getValidBindingType();
         Category category = getValidCathegory();
-        List<Author> authors = getValidAuthorsIds();
+        List<Author> validAuthorsIds = getValidAuthorsIds();
 
         int id = books.stream()
                 .mapToInt(Book::getBookId)
                 .max()
                 .orElse(0);
 
-        books.add(new Book(id, title, isbnNumber, year, typeOfBinding, authors, category));
+        books.add(new Book(id, title, isbnNumber, year, typeOfBinding, validAuthorsIds, category));
         System.out.println("Dodano książkę.");
     }
 
@@ -90,7 +89,6 @@ class BookListEditor extends ListEditor{
     }
 
     private List<Author> getValidAuthorsIds() {
-        List<Author> authors=fileReader.getAuthors();
 
         boolean valid = false;
         String input = "";
@@ -107,7 +105,7 @@ class BookListEditor extends ListEditor{
                 System.out.println("Format id autorów jest niepoprawny.");
             }
         }
-        return fileReader.getAuthors(input);
+        return authors;
     }
 
     private boolean isThisAuthorIdExisting(String authorsId, List<Author> authors) {
@@ -116,7 +114,6 @@ class BookListEditor extends ListEditor{
     }
 
     private Category getValidCathegory() {
-        List<Category> categories=fileReader.getCategories();
 
         String id = "";
         boolean valid = false;
@@ -131,13 +128,13 @@ class BookListEditor extends ListEditor{
             if (!valid) {
                 System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
             }else{
-                if (fileReader.getCathegory(id) == null) {
+                if (fileReader.getCathegory(id,categories) == null) {
                     System.out.println("Numer kategorii: " + id + " nie istnieje.");
                     valid = false;
                 }
             }
         }
-        return fileReader.getCathegory(id);
+        return fileReader.getCathegory(id,categories);
     }
 
 
