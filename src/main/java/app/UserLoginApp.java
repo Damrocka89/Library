@@ -1,5 +1,6 @@
 package app;
 
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,6 +38,35 @@ class UserLoginApp {
         }
         return true;
     }
+
+//    private boolean checkIfPasswordIsCorrect(String username) {
+//        boolean back = false;
+//        while (!back) {
+//            System.out.println("Podaj hasło lub cofnij (Q):");
+//
+//            char password[] = null;
+//            try {
+//                password = PasswordField.getPassword(System.in, "Enter your password: "); //fixme
+//            } catch(IOException ioe) {
+//                ioe.printStackTrace();
+//            }
+//            if(password == null ) {
+//                System.out.println("No password entered");
+//            } else {
+//                System.out.println("The password entered is: "+String.valueOf(password));
+//            }
+//
+//            System.out.println(username+"/"+password);
+//            if (String.valueOf(password).equalsIgnoreCase("q")) {
+//                return false;
+//            } else if (!isPasswordCorrect(username, String.valueOf(password))) {
+//                System.out.println("Nieprawidłowe hasło.");
+//            } else {
+//                back = true;
+//            }
+//        }
+//        return true;
+//    }
 
     private boolean isPasswordCorrect(String username, String password) {
         for (User user : userList) {

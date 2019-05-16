@@ -2,7 +2,6 @@ package app;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -10,15 +9,15 @@ import java.util.Scanner;
 import static app.BookBindingType.M;
 import static app.BookBindingType.T;
 
-class BookListEditor {
+class BookListEditor extends ListEditor{
 
-    private List<Book> books = new ArrayList<>();
+    private List<Book> books;
     private Scanner scanner = new Scanner(System.in);
-    private FileWriterToFileFromList fileWriter;
+    private FileWriterToFileFromList fileWriter=FileWriterToFileFromList.getInstance();;
+    private FileReaderFromFileToList fileReader=FileReaderFromFileToList.getInstance();
 
-    BookListEditor(FileReaderFromFileToList fileReader, LibraryApp libraryApp, FileWriterToFileFromList fileWriter) {
-        this.fileWriter = fileWriter;
-        fileReader.readListOfBooksFromFile(books, libraryApp);
+    BookListEditor() {
+        books=fileReader.readListOfBooksFromFile();
     }
 
     void editYearOfPrintingBook() {
@@ -50,7 +49,7 @@ class BookListEditor {
         System.out.println("Nie znaleziono ksiązki: " + title + " w bazie danych.");
     }
 
-    void addNewBook(List<Author> authorsList, List<Category> categoryList, LibraryApp libraryApp) {
+    void addNewBook() {
         System.out.println("Podaj tytuł:");
         String title = scanner.nextLine().trim();
 
@@ -59,8 +58,8 @@ class BookListEditor {
 
         int year = getValidYearOfIssue();
         BookBindingType typeOfBinding = getValidBindingType();
-        Category category = getValidCathegory(categoryList, libraryApp);
-        List<Author> authors = getValidAuthorsIds(authorsList, libraryApp);
+        Category category = getValidCathegory();
+        List<Author> authors = getValidAuthorsIds();
 
         int id = books.stream()
                 .mapToInt(Book::getBookId)
@@ -90,7 +89,9 @@ class BookListEditor {
         return bindingType;
     }
 
-    private List<Author> getValidAuthorsIds(List<Author> authors, LibraryApp libraryApp) {
+    private List<Author> getValidAuthorsIds() {
+        List<Author> authors=fileReader.getAuthors();
+
         boolean valid = false;
         String input = "";
 
@@ -106,7 +107,7 @@ class BookListEditor {
                 System.out.println("Format id autorów jest niepoprawny.");
             }
         }
-        return libraryApp.getAuthors(input);
+        return fileReader.getAuthors(input);
     }
 
     private boolean isThisAuthorIdExisting(String authorsId, List<Author> authors) {
@@ -114,7 +115,9 @@ class BookListEditor {
                 .anyMatch(author -> String.valueOf(author.getAuthorsId()).equals(authorsId));
     }
 
-    private Category getValidCathegory(List<Category> categories, LibraryApp libraryApp) {
+    private Category getValidCathegory() {
+        List<Category> categories=fileReader.getCategories();
+
         String id = "";
         boolean valid = false;
         while (!valid) {
@@ -127,18 +130,14 @@ class BookListEditor {
             valid = StringUtils.isNumeric(id);
             if (!valid) {
                 System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
+            }else{
+                if (fileReader.getCathegory(id) == null) {
+                    System.out.println("Numer kategorii: " + id + " nie istnieje.");
+                    valid = false;
+                }
             }
         }
-        valid = false;
-        while (!valid) {
-            if (libraryApp.getCathegory(id) != null) {
-                valid = true;
-            }
-            if (!valid) {
-                System.out.println("Numer kategorii: " + id + " nie jest poprawny.");
-            }
-        }
-        return libraryApp.getCathegory(id);
+        return fileReader.getCathegory(id);
     }
 
 

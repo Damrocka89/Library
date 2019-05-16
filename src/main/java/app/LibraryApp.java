@@ -1,19 +1,11 @@
 package app;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class LibraryApp {
     //TODO cala klasa do podzialu
         //      trochę podzieliłam
-
-
-    private List<Author> authors = new ArrayList<>();
-    private List<Category> categories = new ArrayList<>();
 
     private boolean closeApp = false;
     private Scanner scanner = new Scanner(System.in);
@@ -23,14 +15,8 @@ public class LibraryApp {
 
 
     public LibraryApp() {
-        FileReaderFromFileToList fileReader = new FileReaderFromFileToList();
-        FileWriterToFileFromList fileWriter = new FileWriterToFileFromList();
-
-        fileReader.readCathegoriesFromFile(categories);
-        fileReader.readAuthorsFromFile(authors);
-
-        usersEditor = new UsersEditor(fileReader, fileWriter);
-        bookListEditor = new BookListEditor(fileReader, this, fileWriter);
+        usersEditor = new UsersEditor();
+        bookListEditor = new BookListEditor();
     }
 
 
@@ -73,7 +59,7 @@ public class LibraryApp {
                     bookListEditor.printBooks();
                     break;
                 case "2":
-                    bookListEditor.addNewBook(authors, categories, this);
+                    bookListEditor.addNewBook();
                     break;
                 case "3":
                     bookListEditor.removeBookByTitle();
@@ -107,28 +93,8 @@ public class LibraryApp {
                 "7. Wyjdź.");
     }
 
-    Category getCathegory(String idOfCathegory) {
-        for (Category category : categories) {
-            if (category.getCategoryId() == Integer.parseInt(idOfCathegory)) {
-                return category;
-            }
-        }
-        return null;
-    }
 
-    List<Author> getAuthors(String authors) {
-        return Arrays.stream(authors.split(","))
-                .map(id -> getAuthorById(Integer.parseInt(id)))
-                .collect(Collectors.toList());
-    }
 
-    private Author getAuthorById(int id) {
-        for (Author author : authors) {
-            if (author.getAuthorsId() == id) {
-                return author;
-            }
-        }
-        return null;
-    }
+
 
 }

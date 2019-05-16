@@ -7,7 +7,9 @@ import java.util.List;
 
 class FileWriterToFileFromList {
 
-     FileWriterToFileFromList() {
+    private static FileWriterToFileFromList instance;
+
+    private FileWriterToFileFromList() {
     }
 
     void saveChangesInBooksListToCsvFile(List<Book> books) {
@@ -34,5 +36,14 @@ class FileWriterToFileFromList {
         } catch (IOException e) {
             System.out.println("Nie dało się zapisać użytkownika");
         }
+    }
+
+    static FileWriterToFileFromList getInstance() {
+        if (instance == null) {
+            synchronized (FileWriterToFileFromList.class) {
+                instance = new FileWriterToFileFromList();
+            }
+        }
+        return instance;
     }
 }
