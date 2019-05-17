@@ -9,14 +9,20 @@ import java.util.Scanner;
 import static app.BookBindingType.M;
 import static app.BookBindingType.T;
 
-class BookListEditor extends ListEditor{
+class BookListEditor{
+
+    private List<Author> authors;
+    private List<Category> categories;
+    private List<Book> books;
 
     private Scanner scanner = new Scanner(System.in);
     private FileWriterToFileFromList fileWriter=FileWriterToFileFromList.getInstance();
-    private FileReaderFromFileToList fileReader=FileReaderFromFileToList.getInstance();
+    private FileReaderFromFileToList fileReader = FileReaderFromFileToList.getInstance();
 
-    public BookListEditor() {
-        books=fileReader.readListOfBooksFromFile(categories,authors);
+    public BookListEditor(List<Author> authors,List<Category> categories ) {
+        this.authors=authors;
+        this.categories=categories;
+        this.books=fileReader.readListOfBooksFromFile(categories,authors);
     }
 
     void editYearOfPrintingBook() {
@@ -91,7 +97,7 @@ class BookListEditor extends ListEditor{
     private List<Author> getValidAuthorsIds() {
 
         boolean valid = false;
-        String input = "";
+        String input;
 
         while (!valid) {
             for (Author author : authors) {

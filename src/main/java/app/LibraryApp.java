@@ -1,6 +1,7 @@
 package app;
 
 
+import java.util.List;
 import java.util.Scanner;
 
 public class LibraryApp {
@@ -13,10 +14,17 @@ public class LibraryApp {
     private UsersEditor usersEditor;
     private BookListEditor bookListEditor;
 
+    private List<Author> authors;
+    private List<Category> categories;
+    private FileReaderFromFileToList fileReader = FileReaderFromFileToList.getInstance();
+
+
 
     public LibraryApp() {
+        authors = fileReader.readAuthorsFromFile();
+        categories = fileReader.readCathegoriesFromFile();
         usersEditor = new UsersEditor();
-        bookListEditor = new BookListEditor();
+        bookListEditor = new BookListEditor(authors,categories);
     }
 
 
