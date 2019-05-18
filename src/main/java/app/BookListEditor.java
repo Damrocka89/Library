@@ -19,7 +19,7 @@ class BookListEditor{
     private FileWriterToFileFromList fileWriter=FileWriterToFileFromList.getInstance();
     private FileReaderFromFileToList fileReader = FileReaderFromFileToList.getInstance();
 
-    public BookListEditor(List<Author> authors,List<Category> categories ) {
+    BookListEditor(List<Author> authors,List<Category> categories ) {
         this.authors=authors;
         this.categories=categories;
         this.books=fileReader.readListOfBooksFromFile(categories,authors);

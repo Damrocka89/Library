@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LibraryApp {
-    //TODO cala klasa do podzialu
-        //      trochę podzieliłam
 
     private boolean closeApp = false;
     private Scanner scanner = new Scanner(System.in);
