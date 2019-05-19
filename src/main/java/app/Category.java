@@ -1,6 +1,6 @@
 package app;
 
-class Category {
+public class Category {
 
     private int cathegoryId;
     private String cathegoryName;

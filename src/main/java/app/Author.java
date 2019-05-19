@@ -1,6 +1,6 @@
 package app;
 
-class Author {
+public class Author {
 
     private int authorsId;
     private String nameAndSurnameOfAuthor;

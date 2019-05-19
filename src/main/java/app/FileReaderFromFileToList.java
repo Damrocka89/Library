@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class FileReaderFromFileToList {
+public class FileReaderFromFileToList {
 
     private static FileReaderFromFileToList instance;
 
@@ -17,7 +17,7 @@ class FileReaderFromFileToList {
     }
 
 
-    List<Author> readAuthorsFromFile() {
+    public List<Author> readAuthorsFromFile() {
         List<Author> authors = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\authors.csv"))) {
             bufferedReader.lines()
@@ -34,7 +34,7 @@ class FileReaderFromFileToList {
         return new Author(Integer.parseInt(arrayOfAuthorsData[0]), arrayOfAuthorsData[1], Integer.parseInt(arrayOfAuthorsData[2]));
     }
 
-    List<Category> readCathegoriesFromFile() {
+    public List<Category> readCathegoriesFromFile() {
         List<Category> cathegories = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\categories.csv"))) {
             bufferedReader.lines()
@@ -68,7 +68,7 @@ class FileReaderFromFileToList {
         return new User(usersDataArray[0], usersDataArray[1]);
     }
 
-    List<Book> readListOfBooksFromFile(List<Category> categories, List<Author> authors) {
+    public List<Book> readListOfBooksFromFile(List<Category> categories, List<Author> authors) {
         List<Book> books = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\books.csv"))) {
             bufferedReader.lines()
@@ -110,7 +110,7 @@ class FileReaderFromFileToList {
         return null;
     }
 
-    static FileReaderFromFileToList getInstance() {
+    public static FileReaderFromFileToList getInstance() {
         if (instance == null) {
             synchronized (FileReaderFromFileToList.class) {
                 instance = new FileReaderFromFileToList();

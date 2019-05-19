@@ -4,7 +4,7 @@ package app;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class Book {
+public class Book {
 
     private int bookId;
     private String title;
@@ -22,6 +22,27 @@ class Book {
         this.typeOfBinding = typeOfBinding;
         this.authors = authors;
         this.category = category;
+    }
+
+    public String getIsbnNumber() {
+
+        return isbnNumber;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public BookBindingType getTypeOfBinding() {
+        return typeOfBinding;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     String bookToCsv() {
@@ -50,7 +71,7 @@ class Book {
                 .collect(Collectors.joining(","));
     }
 
-    String getTitle() {
+   public String getTitle() {
         return title;
     }
 
