@@ -15,7 +15,7 @@ class UsersEditor {
     private FileReaderFromFileToList fileReader = FileReaderFromFileToList.getInstance();
 
     public UsersEditor() {
-        usersList = fileReader.readUsersAndPasswords();
+        usersList = fileReader.readUsersAndPasswords(CsvFilesPathsTracker.pathToUsersFile);
         this.userRegistrationApp = new UserRegistrationApp(usersList);
         this.userLoginApp = new UserLoginApp(usersList);
     }

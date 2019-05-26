@@ -2,6 +2,7 @@ package app;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Book {
@@ -85,5 +86,24 @@ public class Book {
 
     public void setDefaultCategory() {
         this.category = new Category(0,"Brak",0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return bookId == book.bookId &&
+                year == book.year &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(isbnNumber, book.isbnNumber) &&
+                typeOfBinding == book.typeOfBinding &&
+                Objects.equals(authors, book.authors) &&
+                Objects.equals(category, book.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookId, title, isbnNumber, year, typeOfBinding, authors, category);
     }
 }

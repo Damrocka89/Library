@@ -24,8 +24,8 @@ public class LibraryApp {
 
 
     public LibraryApp() {
-        authors = fileReader.readAuthorsFromFile();
-        categories = fileReader.readCathegoriesFromFile();
+        authors = fileReader.readAuthorsFromFile(CsvFilesPathsTracker.pathToAuthorsFile);
+        categories = fileReader.readCathegoriesFromFile(CsvFilesPathsTracker.pathToCategoriesFile);
         usersEditor = new UsersEditor();
         bookListEditor = new BookListEditor(authors, categories);
     }

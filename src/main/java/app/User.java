@@ -1,5 +1,7 @@
 package app;
 
+import java.util.Objects;
+
 public class User {
 
     private String username;
@@ -20,5 +22,19 @@ public class User {
     boolean isUsernameValid(String username) {
        return this.username.equals(username);
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password);
     }
 }

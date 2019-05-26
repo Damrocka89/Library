@@ -28,7 +28,7 @@ class UserRegistrationApp {
         }
         String password = addingPassword();
         usersList.add(new User(userName, password));
-         fileWriter.addUserToFile(userName, password, usersList);
+         fileWriter.addUserToFile(userName, password, usersList, CsvFilesPathsTracker.pathToUsersFile);
      }
 
      boolean isOnTheListOfUsers(String username) {
