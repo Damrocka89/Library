@@ -1,6 +1,7 @@
 package app;
 
 
+import app.IO.FileReaderFromFileToList;
 import app.displayBooksStrategy.BooksAfter2007Displayer;
 import app.displayBooksStrategy.DefaultBooksDisplayer;
 import app.displayBooksStrategy.SortingByYearAscendingDisplayer;
@@ -78,15 +79,27 @@ public class LibraryApp {
                     bookListEditor.editYearOfPrintingBook();
                     break;
                 case "5":
-                    bookListEditor.saveChanges();
+                    bookListEditor.saveBooks();
                     break;
                 case "6":
                     bookListEditor.printCategories();
                     break;
                 case "7":
-                    startApp();
+                    bookListEditor.removeCategory();
                     break;
                 case "8":
+                    bookListEditor.saveCategories();
+                    break;
+                case "9":
+                    bookListEditor.printAuthors();
+                    break;
+                case "10":
+                    bookListEditor.saveChanges();
+                    break;
+                case "11":
+                    startApp();
+                    break;
+                case "12":
                     closeApp = true;
                     break;
                 default:
@@ -132,10 +145,14 @@ public class LibraryApp {
                 "2. Dodaj nową książkę. \n" +
                 "3. Usuń książkę po nazwie. \n" +
                 "4. Edytuj rok wydania książki. \n" +
-                "5. Zapisz zmiany. \n" +
+                "5. Zapisz zmiany - książki. \n" +
                 "6. Wyświetl wszystkie kategorie. \n" +
-                "7. Cofnij do poprzedniego Menu (wyloguj). \n" +
-                "8. Wyjdź.");
+                "7. Usuń kategorię. \n" +
+                "8. Zapisz zmiany - kategorie. \n" +
+                "9. Wyświetl wszystkich autorów.\n" +
+                "10. Zapisz zmiany - wszystkie. \n" +
+                "11. Cofnij do poprzedniego Menu (wyloguj). \n" +
+                "12. Wyjdź.");
     }
 
     private void printBookListDisplayMenu() {
@@ -143,7 +160,7 @@ public class LibraryApp {
                 "1. Wyświetl domyślnie. \n" +
                 "2. Sortowanie po roku wydania rosnąco. \n" +
                 "3. Sortowanie po roku wydania malejąco. \n" +
-                "4. Książki wydane po 2007 roku.\n"+
+                "4. Książki wydane po 2007 roku.\n" +
                 "5. Cofnij do poprzedniego Menu. ");
     }
 

@@ -14,7 +14,7 @@ public class Book {
     private List<Author> authors;
     private Category category;
 
-    Book(int bookId, String title, String isbnNumber, int year, BookBindingType typeOfBinding, List<Author> authors, Category category) {
+    public Book(int bookId, String title, String isbnNumber, int year, BookBindingType typeOfBinding, List<Author> authors, Category category) {
         this.bookId = bookId;
         this.title = title;
         this.isbnNumber = isbnNumber;
@@ -32,7 +32,7 @@ public class Book {
         this.typeOfBinding = typeOfBinding;
     }
 
-    String bookToCsv() {
+    public String bookToCsv() {
         return bookId + ";" + title + ";" + isbnNumber + ";" + year + ";" + typeOfBinding + ";" + authorsIdsToCSV() + ";" + category.getCategoryId();
     }
 
@@ -77,5 +77,13 @@ public class Book {
 
     public int getYear() {
         return year;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setDefaultCategory() {
+        this.category = new Category(0,"Brak",0);
     }
 }

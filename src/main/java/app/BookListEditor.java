@@ -1,5 +1,7 @@
 package app;
 
+import app.IO.FileReaderFromFileToList;
+import app.IO.FileWriterToFileFromList;
 import app.displayBooksStrategy.BookListDisplayStrategy;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,7 +27,7 @@ class BookListEditor{
     BookListEditor(List<Author> authors,List<Category> categories ) {
         this.authors=authors;
         this.categories=categories;
-        this.books=fileReader.readListOfBooksFromFile(categories,authors);
+        this.books=fileReader.readListOfBooksFromFile(categories,authors,CsvFilesPathsTracker.pathToBooksFile);
     }
 
     void editYearOfPrintingBook() {
@@ -103,9 +105,7 @@ class BookListEditor{
         String input;
 
         while (!valid) {
-            for (Author author : authors) {
-                System.out.println(author);
-            }
+            printAuthors();
             System.out.println("Podaj id autorów (w formacie np. 1, 2):");
             input = scanner.nextLine();
             valid = Arrays.stream(input.split(","))
@@ -115,6 +115,12 @@ class BookListEditor{
             }
         }
         return authors;
+    }
+
+    public void printAuthors() {
+        for (Author author : authors) {
+            System.out.println(author);
+        }
     }
 
     private boolean isThisAuthorIdExisting(String authorsId, List<Author> authors) {
@@ -174,6 +180,28 @@ bookListDisplayStrategy.displayBooks(books);
     }
 
     void saveChanges() {
-        fileWriter.saveChangesInBooksListToCsvFile(books);
+        fileWriter.saveChangesInCategoriesListToCsvFile(categories,CsvFilesPathsTracker.pathToCategoriesFile);
+        fileWriter.saveChangesInBooksListToCsvFile(books,CsvFilesPathsTracker.pathToBooksFile);
+        fileWriter.saveChangesInAuthorsListToCsvFile(authors, CsvFilesPathsTracker.pathToAuthorsFile);
+    }
+
+    public void removeCategory() {
+        Category categoryToRemove = getValidCathegory();
+        Category defaulrCategory=new Category(0,"Brak",0);
+        books.stream()
+                .filter(book->book.getCategory().getCategoryId()==categoryToRemove.getCategoryId())
+                .forEach(Book::setDefaultCategory);
+        categories.remove(categoryToRemove);
+        if (!categories.contains(defaulrCategory)){
+            categories.add(defaulrCategory);
+        }
+    }
+
+    public void saveBooks() {
+        fileWriter.saveChangesInBooksListToCsvFile(books,CsvFilesPathsTracker.pathToBooksFile);
+    }
+
+    public void saveCategories() {
+        fileWriter.saveChangesInCategoriesListToCsvFile(categories, CsvFilesPathsTracker.pathToCategoriesFile);
     }
 }

@@ -1,4 +1,6 @@
-package app;
+package app.IO;
+
+import app.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class FileReaderFromFileToList {
+public class FileReaderFromFileToList {
 
     private static FileReaderFromFileToList instance;
 
@@ -17,9 +19,9 @@ class FileReaderFromFileToList {
     }
 
 
-    List<Author> readAuthorsFromFile() {
+    public List<Author> readAuthorsFromFile(String pathToAuthorsFile) {
         List<Author> authors = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\authors.csv"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToAuthorsFile))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .map(this::createAuthorFromDataArray)
@@ -34,9 +36,9 @@ class FileReaderFromFileToList {
         return new Author(Integer.parseInt(arrayOfAuthorsData[0]), arrayOfAuthorsData[1], Integer.parseInt(arrayOfAuthorsData[2]));
     }
 
-    List<Category> readCathegoriesFromFile() {
+    public List<Category> readCathegoriesFromFile(String pathToCategoriesFile) {
         List<Category> cathegories = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\categories.csv"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToCategoriesFile))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .map(this::getCategoryFromDataArray)
@@ -47,13 +49,13 @@ class FileReaderFromFileToList {
         return cathegories;
     }
 
-    Category getCategoryFromDataArray(String[] arrayOfCategoryData) {
+  private  Category getCategoryFromDataArray(String[] arrayOfCategoryData) {
         return new Category(Integer.parseInt(arrayOfCategoryData[0]), arrayOfCategoryData[1], Integer.parseInt(arrayOfCategoryData[2]));
     }
 
-    List<User> readUsersAndPasswords() {
+    public List<User> readUsersAndPasswords(String pathToUsersFile) {
         List<User> usersList = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\users.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToUsersFile))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .map(this::getUserFromDataArray)
@@ -68,9 +70,9 @@ class FileReaderFromFileToList {
         return new User(usersDataArray[0], usersDataArray[1]);
     }
 
-    List<Book> readListOfBooksFromFile(List<Category> categories, List<Author> authors) {
+    public List<Book> readListOfBooksFromFile(List<Category> categories, List<Author> authors, String pathToBooksFile) {
         List<Book> books = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\main\\resources\\books.csv"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToBooksFile))) {
             bufferedReader.lines()
                     .map(line -> line.split(";"))
                     .map(arrayOfBooksData -> getBookFromDataArray(arrayOfBooksData, categories, authors))
@@ -86,7 +88,7 @@ class FileReaderFromFileToList {
                 BookBindingType.valueOf(arrayOfBooksData[4].toUpperCase()), getAuthors(arrayOfBooksData[5], authors), getCathegory(arrayOfBooksData[6], categories));
     }
 
-    Category getCathegory(String idOfCathegory, List<Category> categories) {
+    public Category getCathegory(String idOfCathegory, List<Category> categories) {
         for (Category category : categories) {
             if (category.getCategoryId() == Integer.parseInt(idOfCathegory)) {
                 return category;
@@ -95,7 +97,7 @@ class FileReaderFromFileToList {
         return null;
     }
 
-    List<Author> getAuthors(String authors, List<Author> authorsList) {
+  private  List<Author> getAuthors(String authors, List<Author> authorsList) {
         return Arrays.stream(authors.split(","))
                 .map(id -> getAuthorById(Integer.parseInt(id), authorsList))
                 .collect(Collectors.toList());
@@ -110,7 +112,7 @@ class FileReaderFromFileToList {
         return null;
     }
 
-    static FileReaderFromFileToList getInstance() {
+    public static FileReaderFromFileToList getInstance() {
         if (instance == null) {
             synchronized (FileReaderFromFileToList.class) {
                 instance = new FileReaderFromFileToList();
