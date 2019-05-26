@@ -1,6 +1,11 @@
 package app;
 
 
+import app.displayBooksStrategy.BooksAfter2007Displayer;
+import app.displayBooksStrategy.DefaultBooksDisplayer;
+import app.displayBooksStrategy.SortingByYearAscendingDisplayer;
+import app.displayBooksStrategy.SortingByYearDescendingDisplayer;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,12 +22,11 @@ public class LibraryApp {
     private FileReaderFromFileToList fileReader = FileReaderFromFileToList.getInstance();
 
 
-
     public LibraryApp() {
         authors = fileReader.readAuthorsFromFile();
         categories = fileReader.readCathegoriesFromFile();
         usersEditor = new UsersEditor();
-        bookListEditor = new BookListEditor(authors,categories);
+        bookListEditor = new BookListEditor(authors, categories);
     }
 
 
@@ -62,7 +66,7 @@ public class LibraryApp {
 
             switch (scanner.nextLine().trim()) {
                 case "1":
-                    bookListEditor.printBooks();
+                    displayBooks();
                     break;
                 case "2":
                     bookListEditor.addNewBook();
@@ -77,10 +81,44 @@ public class LibraryApp {
                     bookListEditor.saveChanges();
                     break;
                 case "6":
-                    startApp();
+                    bookListEditor.printCategories();
                     break;
                 case "7":
+                    startApp();
+                    break;
+                case "8":
                     closeApp = true;
+                    break;
+                default:
+                    System.out.println("Nieprawidłowe polecenie.");
+            }
+        }
+    }
+
+    private void displayBooks() {
+        while (!closeApp) {
+
+            printBookListDisplayMenu();
+
+            switch (scanner.nextLine().trim()) {
+                case "1":
+                    bookListEditor.setBookListDisplayStrategy(new DefaultBooksDisplayer());
+                    bookListEditor.printBooks();
+                    break;
+                case "2":
+                    bookListEditor.setBookListDisplayStrategy(new SortingByYearAscendingDisplayer());
+                    bookListEditor.printBooks();
+                    break;
+                case "3":
+                    bookListEditor.setBookListDisplayStrategy(new SortingByYearDescendingDisplayer());
+                    bookListEditor.printBooks();
+                    break;
+                case "4":
+                    bookListEditor.setBookListDisplayStrategy(new BooksAfter2007Displayer());
+                    bookListEditor.printBooks();
+                    break;
+                case "5":
+                    accessToLibraryBooksListPreview();
                     break;
                 default:
                     System.out.println("Nieprawidłowe polecenie.");
@@ -95,12 +133,18 @@ public class LibraryApp {
                 "3. Usuń książkę po nazwie. \n" +
                 "4. Edytuj rok wydania książki. \n" +
                 "5. Zapisz zmiany. \n" +
-                "6. Cofnij do poprzedniego Menu. \n" +
-                "7. Wyjdź.");
+                "6. Wyświetl wszystkie kategorie. \n" +
+                "7. Cofnij do poprzedniego Menu (wyloguj). \n" +
+                "8. Wyjdź.");
     }
 
-
-
-
+    private void printBookListDisplayMenu() {
+        System.out.println("Wybierz polecenie: \n" +
+                "1. Wyświetl domyślnie. \n" +
+                "2. Sortowanie po roku wydania rosnąco. \n" +
+                "3. Sortowanie po roku wydania malejąco. \n" +
+                "4. Książki wydane po 2007 roku.\n"+
+                "5. Cofnij do poprzedniego Menu. ");
+    }
 
 }

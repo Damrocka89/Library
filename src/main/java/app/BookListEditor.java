@@ -1,5 +1,6 @@
 package app;
 
+import app.displayBooksStrategy.BookListDisplayStrategy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -14,6 +15,8 @@ class BookListEditor{
     private List<Author> authors;
     private List<Category> categories;
     private List<Book> books;
+
+    private BookListDisplayStrategy bookListDisplayStrategy;
 
     private Scanner scanner = new Scanner(System.in);
     private FileWriterToFileFromList fileWriter=FileWriterToFileFromList.getInstance();
@@ -124,9 +127,7 @@ class BookListEditor{
         String id = "";
         boolean valid = false;
         while (!valid) {
-            for (Category category : categories) {
-                System.out.println(category);
-            }
+            printCategories();
             System.out.println("Podaj id kategorii (1-" + categories.size() + "):");
             id = scanner.nextLine();
 
@@ -141,6 +142,12 @@ class BookListEditor{
             }
         }
         return fileReader.getCathegory(id,categories);
+    }
+
+     void printCategories() {
+        for (Category category : categories) {
+            System.out.println(category);
+        }
     }
 
 
@@ -158,9 +165,12 @@ class BookListEditor{
         return Integer.parseInt(yearString);
     }
 
+    public void setBookListDisplayStrategy(BookListDisplayStrategy bookListDisplayStrategy) {
+        this.bookListDisplayStrategy = bookListDisplayStrategy;
+    }
 
     void printBooks() {
-        books.forEach(System.out::println);
+bookListDisplayStrategy.displayBooks(books);
     }
 
     void saveChanges() {
